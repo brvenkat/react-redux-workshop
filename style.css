@@ -1,0 +1,8 @@
+body {
+	margin: 2em;
+}
+label,
+input {
+	display: block;
+	margin-bottom: 1em;
+}
