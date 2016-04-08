@@ -11,15 +11,22 @@ var TodoForm = function Todo(props) {
 		return (
 			<ul>
 				{props.todos.map(function (todo, i) {
-					return <Todo todo={todo} key={i} />;
+					return <Todo todo={todo} completeTodo={props.completeTodo} key={i} />;
 				})}
 			</ul>
 		);
 	},
 	Todo = function Todo(props) {
-		var key = props.todo + "-" + props.i;
+		var isCompleted = props.todo.completed ? 'completed' : '';
+
 		return (
-			<li key={key}>{props.todo}</li>
+			<li key={props.key}>
+				<label>
+					<input id={props.todo.id} name="completed" type="checkbox"
+						onChange={props.completeTodo} />
+					<span className={isCompleted}>{props.todo.title}</span>
+				</label>
+			</li>
 		);
 	},
 	App = React.createClass({
@@ -28,7 +35,7 @@ var TodoForm = function Todo(props) {
 				todos: store.getState()
 			};
 		},
-		addTodo: function changeName(event) {
+		addTodo: function addTodo(event) {
 			var newTodo = event.currentTarget.todo.value;
 
 			event.preventDefault();
@@ -41,11 +48,18 @@ var TodoForm = function Todo(props) {
 
 			event.currentTarget.todo.value = '';
 		},
+		completeTodo: function completeTodo(event) {
+			store.dispatch({ type: 'COMPLETE_TODO', id: event.target.id, completed: event.target.checked });
+			this.setState({
+				todos: store.getState()
+			})
+		},
 		render: function render() {
 			return (
 				<div>
 					<TodoForm addTodo={this.addTodo} />
-					<TodoList todos={this.state.todos} />
+					<TodoList todos={this.state.todos}
+						completeTodo={this.completeTodo} />
 				</div>
 			);
 		}
