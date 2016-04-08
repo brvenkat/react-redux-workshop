@@ -25,18 +25,21 @@ var TodoForm = function Todo(props) {
 	App = React.createClass({
 		getInitialState: function getState() {
 			return {
-				todos: ['Learn React Basics']
+				todos: store.getState()
 			};
 		},
 		addTodo: function changeName(event) {
-			event.preventDefault();
 			var newTodo = event.currentTarget.todo.value;
-			this.state.todos.push(newTodo);
-			event.currentTarget.todo.value = '';
+
+			event.preventDefault();
+
+			store.dispatch({ type: 'ADD_TODO', title: newTodo });
 
 			this.setState({
-				todos: this.state.todos
-			})
+				todos: store.getState()
+			});
+
+			event.currentTarget.todo.value = '';
 		},
 		render: function render() {
 			return (
