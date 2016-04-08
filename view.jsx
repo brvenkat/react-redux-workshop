@@ -29,43 +29,47 @@ var TodoForm = function Todo(props) {
 			</li>
 		);
 	},
-	App = React.createClass({
-		getInitialState: function getState() {
-			return {
-				todos: store.getState()
-			};
-		},
-		addTodo: function addTodo(event) {
-			var newTodo = event.currentTarget.todo.value;
+	App = function app(props) {
+		// console.log(props);
+		return (
+			<div>
+				<TodoForm addTodo={props.addTodo} />
+				<TodoList todos={props.todos}
+					completeTodo={props.completeTodo} />
+			</div>
+		);
+	},
+	ConnectedApp;
 
+function mapStateToProps(state) {
+	console.log(state);
+	return {
+		todos: state
+	}
+}
+function mapDispatchToProps(dispatch) {
+	return {
+		addTodo: function addTodo(event) {
 			event.preventDefault();
 
-			store.dispatch({ type: 'ADD_TODO', title: newTodo });
-
-			this.setState({
-				todos: store.getState()
-			});
+			dispatch({ type: 'ADD_TODO', title: event.currentTarget.todo.value });
 
 			event.currentTarget.todo.value = '';
 		},
 		completeTodo: function completeTodo(event) {
-			store.dispatch({ type: 'COMPLETE_TODO', id: event.target.id, completed: event.target.checked });
-			this.setState({
-				todos: store.getState()
-			})
-		},
-		render: function render() {
-			return (
-				<div>
-					<TodoForm addTodo={this.addTodo} />
-					<TodoList todos={this.state.todos}
-						completeTodo={this.completeTodo} />
-				</div>
-			);
+			dispatch({ type: 'COMPLETE_TODO', id: event.target.id, completed: event.target.checked });
 		}
-	});
+	}
+}
+
+ConnectedApp = ReactRedux.connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(App);
 
 ReactDOM.render(
-	<App />,
+	<ReactRedux.Provider store={reduxStore}>
+		<ConnectedApp />
+	</ReactRedux.Provider>,
 	document.getElementById('root')
 );

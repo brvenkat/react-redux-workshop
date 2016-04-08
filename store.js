@@ -21,9 +21,9 @@ function todoReducer(state, action) {
 	}
 }
 
-window.store = Redux.createStore(todoReducer);
+window.reduxStore = Redux.createStore(todoReducer);
 
-store.subscribe(function logStore() {
-			console.log(store.getState());
+reduxStore.subscribe(function logStore() {
+			console.log(reduxStore.getState());
 		}
 	);
