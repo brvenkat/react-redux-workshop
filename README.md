@@ -44,7 +44,7 @@ The important thing is to know that all the fancy JSX that you see that looks li
 	```
 	<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
 	```
-2. Now convert your `view.js` file to `view.jsx`. This tell the JSX transformer to transpile the JSX to JavaScript at runtime.
+2. Now convert your `view.jsx` file to `view.jsx`. This tell the JSX transformer to transpile the JSX to JavaScript at runtime.
 3. Go back to your `index.html` file and update the script tag to pull the `.jsx` file now and also add the `type="text/jsx"` attribute to the `<script>` tag
 4. You're now ready to write JSX!
 5. Instead of writing `React.createElement` everywhere, you can now just write a function that returns JSX, and use that. Here's an example:
