@@ -1,39 +1,43 @@
-var Greeting = function Greeting(props) {
-	var myStyle = { color: "red" };
+var DisplayList = function DisplayList(props) {
 	return (
-		<h1 className='helloMessage'>
-			<span style={myStyle}> Hi, My name is {props.name}!</span>
-		</h1>
+		<ul>
+          {props.list.map(function(listValue){
+			  return <li>{listValue}</li>;
+		  })}
+		</ul>
 	);
 };
 
 var Form = function Form(props) {
 	return (
-		<form onSubmit={props.setNewName}>
-			<label>Who do you want to say hi to</label>
+		<form onSubmit={props.appendToList}>
+			<label>Enter a String</label>
 			<input type="text" name="myText" />
 		</form>
 	);
 };
 
-var HelloWorld = React.createClass({
+var DisplayStrings = React.createClass({
 	getInitialState: function getInitialState() {
-		return ({'name': "Venkat"});
+		return ({'stringList': ['Learn React and Redux']});
 	},
-	setNewName: function setNewName(event){
+	appendToList: function appendToList(event){
 		event.preventDefault();
-		this.setState({'name': event.currentTarget.elements.myText.value});
+		var oldArray = this.state.stringList;
+		oldArray.push(event.currentTarget.elements.myText.value);
+		this.setState({'stringList': oldArray});
 	},
-	render: function HelloWorld() {
+	render: function showArray() {
+		console.log('***************** ', this.state);
 		return (
 			<div className="myReact">
-				<Greeting name={this.state.name} />
-				<Form setNewName={this.setNewName}/>
+				<DisplayList list={this.state.stringList} />
+				<Form appendToList={this.appendToList}/>
 			</div>
 		);
 	}
 });
 ReactDOM.render(
-    <HelloWorld />,
+    <DisplayStrings />,
 	document.getElementById('root')
 );
