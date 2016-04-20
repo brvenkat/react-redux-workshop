@@ -89,6 +89,7 @@ The important thing is to know that all the fancy JSX that you see that looks li
 				);
 			}
 		});
+		```
 11. Now that we have the ability, add your initial name, "World", to the initial state by returning the string inside an object in the function.
 12. `setNewName` method will capture a form `onsumbit` event, so it needs to `preventDefault`. Then, run a `this.setState()` with the new name as an argument. You can get this argument off the `event.currentTarget`, which I'll explain shortly. This method will be available off of the `this` object.
 13. Finally, add the necessary JSX (basically the HTML) of the form:
