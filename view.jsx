@@ -19,20 +19,19 @@ var Form = function Form(props) {
 
 var DisplayStrings = React.createClass({
 	getInitialState: function getInitialState() {
-		return ({'stringList': ['Learn React and Redux']});
+		return {'stringList': store.getState()};
 	},
 	appendToList: function appendToList(event){
 		event.preventDefault();
-		var oldArray = this.state.stringList;
-		oldArray.push(event.currentTarget.elements.myText.value);
-		this.setState({'stringList': oldArray});
+		store.dispatch({type: 'ADD_TODO', value: event.currentTarget.elements.myText.value});
+		event.currentTarget.elements.myText.value='';
+		this.setState({'stringList': store.getState()});
 	},
 	render: function showArray() {
-		console.log('***************** ', this.state);
 		return (
 			<div className="myReact">
-				<DisplayList list={this.state.stringList} />
 				<Form appendToList={this.appendToList}/>
+				<DisplayList list={this.state.stringList} />
 			</div>
 		);
 	}
