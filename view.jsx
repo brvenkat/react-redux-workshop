@@ -2,13 +2,22 @@ var DisplayList = function DisplayList(props) {
 	return (
 		<ul>
           {props.list.map(function(listValue){
-			  console.log(JSON.stringify(listValue));
-			  return <li>
-				  <label htmlFor={listValue.id}>
-			  		<input type = "checkbox" name="myCheckBox" checked={listValue.completed} id={listValue.id} onChange={props.completeToDo} />
+			  if (listValue.completed)
+			  {
+				  return <li className="completed">
+					  <label htmlFor={listValue.id}>
+						  <input type = "checkbox" name="myCheckBox" checked={listValue.completed} id={listValue.id} onChange={props.completeToDo} />
 					  {listValue.text}
-				  </label>
-			  	</li>;
+					  </label>
+				  </li>;
+			  } else {
+				  return <li>
+					  <label htmlFor={listValue.id}>
+						  <input type = "checkbox" name="myCheckBox" checked={listValue.completed} id={listValue.id} onChange={props.completeToDo} />
+					  {listValue.text}
+					  </label>
+				  </li>;
+			  }
 		  })}
 		</ul>
 	);

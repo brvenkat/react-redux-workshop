@@ -28,16 +28,16 @@ function generateNewEntry(state, action, completed) {
 		shallowCopy = state.slice(0,firstPartEnd),
 		lastPartArray = state.slice(lastPartStart, state.length),
 		toBeModified = state[action.id],
-		newObj,
+		newObj={},
 		newArray;
 		if (completed) {
 			newObj.id = toBeModified.id;
 			newObj.text = toBeModified.text;
-			toBeModified.completed = true;
+			newObj.completed = true;
 		} else {
 			newObj.id = toBeModified.id;
 			newObj.text = toBeModified.text;
-			toBeModified.completed = false;
+			newObj.completed = false;
 		}
 		shallowCopy.push(newObj);
 		newArray = shallowCopy.concat(lastPartArray);
@@ -45,3 +45,8 @@ function generateNewEntry(state, action, completed) {
 }
 
 window.store = Redux.createStore(myReducer);
+
+store.subscribe(function logStore() {
+		console.log(store.getState());
+	}
+);
