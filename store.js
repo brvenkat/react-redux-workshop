@@ -6,7 +6,7 @@ function myReducer(state, action) {
 	}
 	switch (action.type) {
 		case 'ADD_TODO':
-			var newtodos = state,
+			var newtodos = state.slice(),
 				newObj = {};
 			newObj.text = action.value.text;
 			newObj.completed = action.value.completed;
@@ -30,23 +30,23 @@ function generateNewEntry(state, action, completed) {
 		toBeModified = state[action.id],
 		newObj={},
 		newArray;
-		if (completed) {
-			newObj.id = toBeModified.id;
-			newObj.text = toBeModified.text;
-			newObj.completed = true;
-		} else {
-			newObj.id = toBeModified.id;
-			newObj.text = toBeModified.text;
-			newObj.completed = false;
-		}
-		shallowCopy.push(newObj);
-		newArray = shallowCopy.concat(lastPartArray);
-    return newArray;
+	if (completed) {
+		newObj.id = toBeModified.id;
+		newObj.text = toBeModified.text;
+		newObj.completed = true;
+	} else {
+		newObj.id = toBeModified.id;
+		newObj.text = toBeModified.text;
+		newObj.completed = false;
+	}
+	shallowCopy.push(newObj);
+	newArray = shallowCopy.concat(lastPartArray);
+	return newArray;
 }
 
-window.store = Redux.createStore(myReducer);
+window.reduxStore = Redux.createStore(myReducer);
 
-store.subscribe(function logStore() {
-		console.log(store.getState());
+reduxStore.subscribe(function logStore() {
+		console.log(reduxStore.getState());
 	}
 );

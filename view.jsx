@@ -1,26 +1,29 @@
-var DisplayList = function DisplayList(props) {
-	return (
-		<ul>
-          {props.list.map(function(listValue){
-			  if (listValue.completed)
-			  {
-				  return <li className="completed">
-					  <label htmlFor={listValue.id}>
-						  <input type = "checkbox" name="myCheckBox" checked={listValue.completed} id={listValue.id} onChange={props.completeToDo} />
-					  {listValue.text}
-					  </label>
-				  </li>;
-			  } else {
-				  return <li>
-					  <label htmlFor={listValue.id}>
-						  <input type = "checkbox" name="myCheckBox" checked={listValue.completed} id={listValue.id} onChange={props.completeToDo} />
-					  {listValue.text}
-					  </label>
-				  </li>;
-			  }
-		  })}
-		</ul>
-	);
+var ConnectedApp;
+
+var mapStateToProps = function mapStateToProps (state) {
+	return {'stringList': state};
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	return {
+		'appendToList': function appendToList(event){
+			event.preventDefault();
+			dispatch({type: 'ADD_TODO', value: {text: event.currentTarget.elements.myText.value, completed: false}});
+			event.currentTarget.elements.myText.value='';
+		},
+		'completeToDo': function completeToDo(event) {
+			if (event.currentTarget.checked) {
+				dispatch({type: 'COMPLETE_TODO',
+					id: Number(event.currentTarget.id)
+				});
+			} else {
+				dispatch({type: 'UNCOMPLETE_TODO',
+					id: Number(event.currentTarget.id)
+				});
+			}
+		}
+	}
+
 };
 
 var Form = function Form(props) {
@@ -32,38 +35,45 @@ var Form = function Form(props) {
 	);
 };
 
-var DisplayStrings = React.createClass({
-	getInitialState: function getInitialState() {
-		return {'stringList': store.getState()};
-	},
-	appendToList: function appendToList(event){
-		event.preventDefault();
-		store.dispatch({type: 'ADD_TODO', value: {text: event.currentTarget.elements.myText.value, completed: false}});
-		event.currentTarget.elements.myText.value='';
-		this.setState({'stringList': store.getState()});
-	},
-	completeToDo: function completeToDo(event) {
-		if (event.currentTarget.checked) {
-			store.dispatch({type: 'COMPLETE_TODO',
-				id: Number(event.currentTarget.id)
-			});
-		} else {
-			store.dispatch({type: 'UNCOMPLETE_TODO',
-				id: Number(event.currentTarget.id)
-			});
-		}
-		this.setState({'stringList': store.getState()});
-	},
-	render: function showArray() {
+var DisplayList = function DisplayList(props) {
+	return (
+		<ul>
+			{props.stringList.map(function(listValue){
+				if (listValue.completed)
+				{
+					return <li className="completed">
+						<label htmlFor={listValue.id}>
+							<input type = "checkbox" name="myCheckBox" checked={listValue.completed} id={listValue.id} onChange={props.completeToDo} />
+							{listValue.text}
+						</label>
+					</li>;
+				} else {
+					return <li>
+						<label htmlFor={listValue.id}>
+							<input type = "checkbox" name="myCheckBox" checked={listValue.completed} id={listValue.id} onChange={props.completeToDo} />
+							{listValue.text}
+						</label>
+					</li>;
+				}
+			})}
+		</ul>
+	);
+};
+
+var rootComponent = function rootComponent(props){
 		return (
 			<div className="myReact">
-				<Form appendToList={this.appendToList} />
-				<DisplayList list={this.state.stringList} completeToDo={this.completeToDo} />
+				<Form  appendToList={props.appendToList}/>
+				<DisplayList stringList = {props.stringList} completeToDo = {props.completeToDo}/>
 			</div>
 		);
-	}
-});
+};
+
+ConnectedApp = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(rootComponent);
+
 ReactDOM.render(
-    <DisplayStrings />,
+	<ReactRedux.Provider store={reduxStore}>
+		<ConnectedApp />
+	</ReactRedux.Provider>,
 	document.getElementById('root')
-);
+	);
