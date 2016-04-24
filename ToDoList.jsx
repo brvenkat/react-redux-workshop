@@ -1,4 +1,4 @@
-var ConnectedApp;
+var ToDoListApp;
 
 var mapStateToProps = function mapStateToProps (state) {
 	return {'stringList': state};
@@ -6,11 +6,6 @@ var mapStateToProps = function mapStateToProps (state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	return {
-		'appendToList': function appendToList(event){
-			event.preventDefault();
-			dispatch({type: 'ADD_TODO', value: {text: event.currentTarget.elements.myText.value, completed: false}});
-			event.currentTarget.elements.myText.value='';
-		},
 		'completeToDo': function completeToDo(event) {
 			if (event.currentTarget.checked) {
 				dispatch({type: 'COMPLETE_TODO',
@@ -24,15 +19,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		}
 	}
 
-};
-
-var Form = function Form(props) {
-	return (
-		<form onSubmit={props.appendToList}>
-			<label>Enter a String</label>
-			<input type="text" name="myText" />
-		</form>
-	);
 };
 
 var DisplayList = function DisplayList(props) {
@@ -60,20 +46,12 @@ var DisplayList = function DisplayList(props) {
 	);
 };
 
-var rootComponent = function rootComponent(props){
-		return (
-			<div className="myReact">
-				<Form  appendToList={props.appendToList}/>
-				<DisplayList stringList = {props.stringList} completeToDo = {props.completeToDo}/>
-			</div>
-		);
+var ToDoListComponent = function ToDoListComponent(props){
+	return (
+		<div className="myToDo">
+			<DisplayList stringList = {props.stringList} completeToDo = {props.completeToDo}/>
+		</div>
+	);
 };
 
-ConnectedApp = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(rootComponent);
-
-ReactDOM.render(
-	<ReactRedux.Provider store={reduxStore}>
-		<ConnectedApp />
-	</ReactRedux.Provider>,
-	document.getElementById('root')
-	);
+ToDoListApp = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ToDoListComponent);
