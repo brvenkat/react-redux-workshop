@@ -1,3 +1,6 @@
+import * as React from 'react';
+import * as ReactRedux from 'react-redux';
+
 var AddToDoApp;
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
@@ -29,3 +32,5 @@ var AddToDoComponent = function ToDoListComponent(props){
 };
 
 AddToDoApp = ReactRedux.connect(null, mapDispatchToProps)(AddToDoComponent);
+
+export default AddToDoApp;

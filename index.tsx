@@ -1,3 +1,10 @@
+import * as ReactRedux from 'react-redux';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import reduxStore from './store';
+import AddToDoApp from './AddToDo';
+import ToDoListApp from './ToDoList';
+
 function rootComponent(){
 		return (
 			<div className="myReact">
@@ -7,9 +14,7 @@ function rootComponent(){
 		);
 };
 
-console.log(rootComponent);
 var ConnectedApp = ReactRedux.connect(null, null)(rootComponent);
-console.log(ConnectedApp);
 
 ReactDOM.render(
 	<ReactRedux.Provider store={reduxStore}>

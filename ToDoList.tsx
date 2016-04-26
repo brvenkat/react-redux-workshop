@@ -1,3 +1,6 @@
+import * as React from 'react';
+import * as ReactRedux from 'react-redux';
+
 var ToDoListApp;
 
 var mapStateToProps = function mapStateToProps (state) {
@@ -55,3 +58,5 @@ var ToDoListComponent = function ToDoListComponent(props){
 };
 
 ToDoListApp = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(ToDoListComponent);
+
+export default ToDoListApp;

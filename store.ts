@@ -1,3 +1,5 @@
+import * as Redux from 'redux';
+
 const initialState = [{id: 0, completed: false, text: 'Learn React and Redux'}];
 
 function myReducer(state, action) {
@@ -7,7 +9,7 @@ function myReducer(state, action) {
 	switch (action.type) {
 		case 'ADD_TODO':
 			var newtodos = state.slice(),
-				newObj = {};
+				newObj:any = {};
 			newObj.text = action.value.text;
 			newObj.completed = action.value.completed;
 			newObj.id = state.length;
@@ -28,7 +30,7 @@ function generateNewEntry(state, action, completed) {
 		shallowCopy = state.slice(0,firstPartEnd),
 		lastPartArray = state.slice(lastPartStart, state.length),
 		toBeModified = state[action.id],
-		newObj={},
+		newObj: any={},
 		newArray;
 	if (completed) {
 		newObj.id = toBeModified.id;
@@ -44,9 +46,11 @@ function generateNewEntry(state, action, completed) {
 	return newArray;
 }
 
-window.reduxStore = Redux.createStore(myReducer);
+var reduxStore = Redux.createStore(myReducer);
 
 reduxStore.subscribe(function logStore() {
 		console.log(reduxStore.getState());
 	}
 );
+
+export default reduxStore;
